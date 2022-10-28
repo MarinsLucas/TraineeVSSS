@@ -51,7 +51,7 @@ float util::dist(point2f<T> pos, point2f<T> goal)
 {
   float cat_o,cat_a,hip;
   cat_a=(goal.x)-(pos.x);
-  cat_o=(goal.y)-(goal.y);
+  cat_o=(goal.y)-(pos.y);
   hip=sqrt((cat_a*cat_a)+(cat_o*cat_o));
 return hip;
 }
