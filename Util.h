@@ -1,9 +1,10 @@
-
 #ifndef UTIL_H
 #define UTIL_H
 
 #include<cmath>
 #include <iostream>
+
+#define ROBOT_MAX_VELOCITY 10.0
 
 using namespace std; 
 
@@ -14,7 +15,7 @@ struct point2f
 };
 
 struct Bola{
-  point2f<int> pos;
+  point2f<float> pos;
   point2f<float> velocity;
   float sin;
 }; 
@@ -37,11 +38,11 @@ struct Robot
 template<typename T>
 float dist(point2f<T> pos, point2f<T> goal)
 {
-  int ha,he,hi;
-  ha=(goal.x)-(pos.x);
-  he=(goal.y)-(goal.y);
-  hi=sqrt((ha*ha)+(he*he));
-return hi;
+  float cat_o,cat_a,hip;
+  cat_a=(goal.x)-(pos.x);
+  cat_o=(goal.y)-(goal.y);
+  hip=sqrt((cat_a*cat_a)+(cat_o*cat_o));
+return hip;
 }
 /*vou considerar o robô como ponto, então ele não pode estar virado ao contrário
 procurando o arcsen*/
@@ -49,24 +50,20 @@ procurando o arcsen*/
 template<typename T>
 float angle(point2f<T> pos, point2f<T> goal)
 {
-    int ha,he,hi,ho;
-  ha=(goal.x)-(pos.x);
-  he=(goal.y)-(goal.y);
-  hi=ha/he;
-  ho=asin(hi);
+  float cat_a,cat_o,sen,theta;
+  cat_a=(goal.x)-(pos.x);
+  cat_o=(goal.y)-(goal.y);
+  sen=cat_o/cat_a;
+  theta=asin(sen);
   
-return ho;
+return theta;
 }
 
 class util
 {
-    private:
-    Robot robot; 
-
     public:
-    float dist(point2f<int> pos, point2f<int> goal);
-    float angle();
-    
+    float dist(point2f<float> pos, point2f<float> goal);
+    float angle(point2f<float> pos, point2f<float> goal);
 }; 
 
 #endif

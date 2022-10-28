@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
     int a;
-    point2f<int> bola; 
+    point2f<float> bola; 
     bola.x = 150/2;
     bola.y = 130/2; 
 

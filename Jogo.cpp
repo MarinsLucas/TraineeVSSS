@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Jogo.h"
 
-Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<int> b)
+Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
 {
     //Configuração do critério de parada
     criterioParada = cP;
@@ -17,8 +17,8 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<int> b)
     //Configuração da bola
     bola.pos.x = b.x; 
     bola.pos.y = b.y;
-    bola.velocity.x = 0; 
-    bola.velocity.y = 0;
+    bola.velocity.x = 10; 
+    bola.velocity.y = -10;
 
     //Configuração do coeficiente de atrito
     atrito = 9.82*kat; 
@@ -51,7 +51,8 @@ void Jogo::run()
   
   //delete robot; 
   
-    cout<<"Posição Bola: (" << bola.pos.x << "," << bola.pos.x << ")" << endl;
+    cout<<"Posição Bola: (" << bola.pos.x << "," << bola.pos.y << ")" << endl;
+    cout<<"Velocidade Bola: ("<<bola.velocity.x <<","<<bola.velocity.y<<")"<<endl;
     
     uptadeBall(0.5);
   
@@ -81,9 +82,34 @@ void Jogo::uptadeBall(float deltaTime)
 {
     bola.pos.x += bola.velocity.x * deltaTime;
     bola.pos.y += bola.velocity.y * deltaTime;
-    bola.velocity.x -= atrito * deltaTime;
-    bola.velocity.y -= atrito * deltaTime;
+    bola.velocity.x -= atrito * deltaTime * ((bola.velocity.x > 0) ? 1 : ((bola.velocity.x < 0) ? -1 : 0));
+    bola.velocity.y -= atrito * deltaTime * ((bola.velocity.y > 0) ? 1 : ((bola.velocity.y < 0) ? -1 : 0));
 
+    if(abs(bola.velocity.x) < 0.3)
+        bola.velocity.x = 0;
+    if(abs(bola.velocity.y) < 0.3)
+        bola.velocity.y = 0;
+
+    if(bola.pos.x > campo.x)
+    {
+      bola.velocity.x *=-1; 
+      bola.pos.x = campo.x; 
+    }else if(bola.pos.x < 0)
+    {
+      bola.velocity.x *=-1;
+      bola.pos.x = 0; 
+    }
+
+    if(bola.pos.y > campo.y)
+    {
+      bola.pos.y = campo.y;
+      bola.velocity.y *=-1; 
+    }else if(bola.pos.y < 0)
+    {
+      bola.pos.y = 0; 
+      bola.velocity.y *=-1;
+    }
+  
     bola.sin = bola.velocity.y/(bola.velocity.x*bola.velocity.x + bola.velocity.y*bola.velocity.y);
 }
 

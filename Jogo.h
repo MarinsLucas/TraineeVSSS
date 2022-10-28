@@ -16,11 +16,11 @@ class Jogo{
     strategy time_1;
     strategy time_2;
     Placar placar;
-    int criterioParada;
-    Bola bola;
-    float atrito; 
+    int criterioParada;  // quantidade máxima de gols
+    Bola bola;      //Bola
+    float atrito;   //coeficiente de atrito entre bola e campo
   public:
-    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<int> b);
+    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b);
     ~Jogo();
     bool checkState(Placar atual);
     void gameOver(); 
