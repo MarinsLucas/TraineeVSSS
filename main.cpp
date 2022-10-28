@@ -17,5 +17,4 @@ int main()
         jogo.run();
         cin >> a;
     }
-    //delete jogo;
 }

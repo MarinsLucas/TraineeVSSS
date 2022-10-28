@@ -22,6 +22,9 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
 
     //Configuração do coeficiente de atrito
     atrito = 9.82*kat; 
+    time_1.setDeltaTime(0.5);
+    time_1.setDeltaTime(0.5);
+
 }
 
 Jogo::~Jogo()

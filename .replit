@@ -1,4 +1,4 @@
-run = "g++ *.cpp -o output.exe -lm"
+run = "g++ *.cpp -o output.exe -lm \n ./output.exe"
 
 [nix]
 channel = "stable-21_11"

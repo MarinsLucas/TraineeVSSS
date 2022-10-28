@@ -5,6 +5,7 @@
 #include <iostream>
 
 #define ROBOT_MAX_VELOCITY 10.0
+#define ACE 10
 
 using namespace std; 
 
@@ -30,13 +31,23 @@ struct Robot
 {
   int index;
   float theta;
-  point2f<int> pos; 
-  point2f<int> goal;
+  point2f<float> pos; 
+  point2f<float> goal;
+  point2f<float> velocity; 
   rodas c;
 }; 
 
+class util
+{
+    public:
+    template<typename T>
+    float dist(point2f<T> pos, point2f<T> goal);
+    template<typename T>
+    point2f<T> angle(point2f<T> pos, point2f<T> goal);
+}; 
+
 template<typename T>
-float dist(point2f<T> pos, point2f<T> goal)
+float util::dist(point2f<T> pos, point2f<T> goal)
 {
   float cat_o,cat_a,hip;
   cat_a=(goal.x)-(pos.x);
@@ -48,22 +59,15 @@ return hip;
 procurando o arcsen*/
 
 template<typename T>
-float angle(point2f<T> pos, point2f<T> goal)
+point2f<T> util::angle(point2f<T> pos, point2f<T> goal)
 {
-  float cat_a,cat_o,sen,theta;
+  point2f<T> sincos; 
+  float cat_a,cat_o;
+  cat_o=(goal.y)-(pos.y);
   cat_a=(goal.x)-(pos.x);
-  cat_o=(goal.y)-(goal.y);
-  sen=cat_o/cat_a;
-  theta=asin(sen);
-  
-return theta;
+  sincos.y = (cat_o == 0) ? 0 : cat_o/sqrt((cat_a*cat_a)+(cat_o*cat_o));
+  sincos.x = (cat_a == 0) ? 0 : cat_a/sqrt((cat_a*cat_a)+(cat_o*cat_o));  
+return sincos;
 }
-
-class util
-{
-    public:
-    float dist(point2f<float> pos, point2f<float> goal);
-    float angle(point2f<float> pos, point2f<float> goal);
-}; 
 
 #endif
