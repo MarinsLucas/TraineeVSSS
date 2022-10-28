@@ -29,7 +29,7 @@ void strategy::goalKepper(Robot &robot, Bola bola)
 {
     //Estratégia do Goleiro
     //o goleiro vai de 42 até 86 (área do gol)
-  
+  if(!(robot.pos.x))
   if(robot.pos.y > 42 && bola.pos.y < robot.pos.y)
   {
     robot.goal.x = robot.pos.x;
