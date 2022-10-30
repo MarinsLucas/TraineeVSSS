@@ -53,42 +53,34 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
 
 void strategy::defender(Robot &robot, Bola &bola)
 {
-	float horizontalDist = abs(dist(centroidDef, robot.pos) * angle(centroidDef, robot.pos).x);
+	float horizontalDist = abs(dist(centroidDef, bola.pos) * angle(centroidDef, bola.pos).x);
 	
 	//Line for debugging
 	//cout<<horizontalDist<<endl; 
 	
   //Estratégia do zagueiro 
-	if(horizontalDist >= 0 && horizontalDist < tamCampo.x/3)
+	if ((horizontalDist >= 0 && horizontalDist < tamCampo.x/3) || (horizontalDist >= tamCampo.x/3 && horizontalDist<2*tamCampo.x/3))
 	{
 		//Nessa linha, eu acho interessante ele evitar entrar dentro da área do gol. 
 		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
-		if((bola.pos.y>2*tamCampo.y/3 && bola.pos.y<=tamCampo.y))
-		{
-			cout<<"Quadrante 1" <<endl;
-		}
-		else if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
+		cout<<"Quadrante 1, 2, 5, 7, 8"<<endl;
+		//Ele tem que entrar na frente da bola
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime + direction*4);
+		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
+				
+		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
 		{
 			cout<<"Quadrante 4"<<endl;
-		}
-		else
-		{
-			cout<<"Quadrante 7"<<endl;
-		}
-	}
-	else	if (horizontalDist >= tamCampo.x/3 && horizontalDist<2*tamCampo.x/3)
-	{
-		if((bola.pos.y>2*tamCampo.y/3 && bola.pos.y<=tamCampo.y))
-		{
-			cout<<"Quadrante 2" <<endl;
-		}
-		else if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
-		{
-			cout<<"Quadrante 5"<<endl;
-		}
-		else
-		{
-			cout<<"Quadrante 8"<<endl;
+			if(robot.goal.x <= 15)
+			{
+				//robo sai do meio
+				robot.goal.x = 15; 
+				
+				if(bola.pos.x < 15)
+				{
+					robot.pos.y = bola.pos.y + 4;
+				}
+			}
 		}
 	}
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist <= tamCampo.x)
@@ -96,25 +88,13 @@ void strategy::defender(Robot &robot, Bola &bola)
     cout<<"Quadrante 3, 6 ou 9"<<endl; 
 		
  	 //Estratégia do Zagueiro Descansando
-    robot.goal.x=tamCampo.x/2;
-      
-    if(bola.pos.y > 2*tamCampo.y/3) 
-        robot.goal.y = bola.pos.y;
-    else if(bola.pos.y < tamCampo.y/3) 
-        robot.goal.y = bola.pos.y;
-    else if(bola.pos.y < robot.pos.y)
-    {
-      robot.goal.y = bola.pos.y;  
-    } 
-    else if(bola.pos.y > robot.pos.y)
-    {
-      robot.goal.y = bola.pos.y;  
-    }
-    else
-    {
-      robot.goal = robot.pos; 
-    }
+    robot.goal.x = tamCampo.x/2;
+    robot.goal.y = bola.pos.y + bola.velocity.y * deltaTime;
   } 
+
+	if(dist(robot.pos, bola.pos)<4 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+
+	updateRobot(robot);
 }
 
 void strategy::striker(Robot &robot, Bola &ball)

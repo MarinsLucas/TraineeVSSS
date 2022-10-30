@@ -25,7 +25,7 @@ class strategy : public util
         void striker(Robot &robot, Bola &ball);
         void updateRobot(Robot &robot);
         void setDeltaTime(float dt){deltaTime = dt;};
-        void setCentroid(point2f<float> cA, point2f<float> cD, point2f<int> campSize){centroidAtk = cA; centroidDef = cD; tamCampo = campSize; };
+        void setCentroid(point2f<float> cA, point2f<float> cD, point2f<int> campSize){centroidAtk = cA; centroidDef = cD; tamCampo = campSize; direction = (cA.x - cD.x)/abs(cA.x - cD.x); };
         void kick(Robot &robot, Bola &bola);
 };
 

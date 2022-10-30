@@ -18,7 +18,7 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
     bola.pos.x = b.x; 
     bola.pos.y = b.y;
     bola.velocity.x = 10; 
-    bola.velocity.y = 0;
+    bola.velocity.y = 5;
     point2f<float> c1,c2; 
   
     c1.x = 0;
