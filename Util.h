@@ -5,7 +5,6 @@
 #include <iostream>
 
 #define ROBOT_MAX_VELOCITY 10.0
-#define ACE 10
 
 using namespace std; 
 

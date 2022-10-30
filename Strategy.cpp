@@ -61,6 +61,8 @@ void strategy::defender(Robot &robot, Bola &bola)
   //Estratégia do zagueiro 
 	if(horizontalDist >= 0 && horizontalDist < tamCampo.x/3)
 	{
+		//Nessa linha, eu acho interessante ele evitar entrar dentro da área do gol. 
+		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
 		if((bola.pos.y>2*tamCampo.y/3 && bola.pos.y<=tamCampo.y))
 		{
 			cout<<"Quadrante 1" <<endl;
@@ -179,10 +181,11 @@ Robot* strategy::getRobot(int index)
 
 void strategy::updateRobot(Robot &robot)
 {
-  robot.velocity.x = angle(robot.pos, robot.goal).x * ROBOT_MAX_VELOCITY;
-  robot.velocity.y = angle(robot.pos, robot.goal).y * ROBOT_MAX_VELOCITY; 
-  
-  robot.pos.x += robot.velocity.x*deltaTime;  
+	//float vel = ((dist(robot.pos, robot.goal)/deltaTime > ROBOT_MAX_VELOCITY) ? ROBOT_MAX_VELOCITY : dist(robot.pos,robot.goal));
+  robot.velocity.x = angle(robot.pos, robot.goal).x * ((dist(robot.pos, robot.goal)/deltaTime > ROBOT_MAX_VELOCITY) ? ROBOT_MAX_VELOCITY : dist(robot.pos,robot.goal));
+  robot.velocity.y = angle(robot.pos, robot.goal).y * ((dist(robot.pos, robot.goal)/deltaTime > ROBOT_MAX_VELOCITY) ? ROBOT_MAX_VELOCITY : dist(robot.pos,robot.goal)); 
+	
+  robot.pos.x += robot.velocity.x*deltaTime;   
   robot.pos.y += robot.velocity.y*deltaTime; 
 }
 
