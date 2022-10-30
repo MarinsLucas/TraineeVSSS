@@ -18,13 +18,15 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
     bola.pos.x = b.x; 
     bola.pos.y = b.y;
     bola.velocity.x = 10; 
-    bola.velocity.y = -10;
-    point2f<int> c1,c2; 
+    bola.velocity.y = 0;
+    point2f<float> c1,c2; 
   
     c1.x = 0;
     c1.y = 65; 
     c2.x = 150; 
     c2.y = 65; 
+
+		//Configuração do time
     time_1.setCentroid(c1, c2, campo);
     time_2.setCentroid(c2,c1, campo);
     

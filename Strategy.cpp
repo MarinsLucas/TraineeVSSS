@@ -29,8 +29,10 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
 {
     //Estratégia do Goleiro
     //o goleiro vai de 42 até 86 (área do gol)
-  if(bola.pos.y > 2*tamCampo.y/3) robot.goal.y = 2*tamCampo.y/3;
-  else if(bola.pos.y < tamCampo.y/3) robot.goal.y = tamCampo.y/3;
+  if(bola.pos.y > 2*tamCampo.y/3) 
+			robot.goal.y = 2*tamCampo.y/3;
+  else if(bola.pos.y < tamCampo.y/3) 
+			robot.goal.y = tamCampo.y/3;
   else if(bola.pos.y < robot.pos.y)
   {
     robot.goal.y = bola.pos.y;   } 
@@ -49,61 +51,89 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
   updateRobot(robot);
 }
 
-void strategy::defender(Robot robot, Bola bola)
+void strategy::defender(Robot &robot, Bola &bola)
 {
+	float horizontalDist = abs(dist(centroidDef, robot.pos) * angle(centroidDef, robot.pos).x);
+	
+	//Line for debugging
+	//cout<<horizontalDist<<endl; 
+	
   //Estratégia do zagueiro 
-  if((robot.pos.y>86 && robot.pos.y<=130))
+	if(horizontalDist >= 0 && horizontalDist < tamCampo.x/3)
+	{
+		if((bola.pos.y>2*tamCampo.y/3 && bola.pos.y<=tamCampo.y))
+		{
+			cout<<"Quadrante 1" <<endl;
+		}
+		else if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
+		{
+			cout<<"Quadrante 4"<<endl;
+		}
+		else
+		{
+			cout<<"Quadrante 7"<<endl;
+		}
+	}
+	else	if (horizontalDist >= tamCampo.x/3 && horizontalDist<2*tamCampo.x/3)
+	{
+		if((bola.pos.y>2*tamCampo.y/3 && bola.pos.y<=tamCampo.y))
+		{
+			cout<<"Quadrante 2" <<endl;
+		}
+		else if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
+		{
+			cout<<"Quadrante 5"<<endl;
+		}
+		else
+		{
+			cout<<"Quadrante 8"<<endl;
+		}
+	}
+	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist <= tamCampo.x)
   {
-    if(robot.pos.x>=0 && robot.pos.x<=tamCampo.x/3)
+    cout<<"Quadrante 3, 6 ou 9"<<endl; 
+		
+ 	 //Estratégia do Zagueiro Descansando
+    robot.goal.x=tamCampo.x/2;
+      
+    if(bola.pos.y > 2*tamCampo.y/3) 
+        robot.goal.y = bola.pos.y;
+    else if(bola.pos.y < tamCampo.y/3) 
+        robot.goal.y = bola.pos.y;
+    else if(bola.pos.y < robot.pos.y)
     {
-      cout<<"Quadrante 1" <<endl;
-    }
-    else if((robot.pos.x>50 && robot.pos.x<=2*tamCampo.x/3))
+      robot.goal.y = bola.pos.y;  
+    } 
+    else if(bola.pos.y > robot.pos.y)
     {
-      cout<<"Quadrante 2"<<endl;
+      robot.goal.y = bola.pos.y;  
     }
     else
     {
-      cout<<"Quadrante 3"<<endl;
+      robot.goal = robot.pos; 
     }
-  }
-  else if((robot.pos.y>42 && robot.pos.y<=86))
-  {
-    if((robot.pos.x>=0 && robot.pos.x<=tamCampo.x/3))
-    {
-      cout<<"Quadrante 4"<<endl;
-    }
-    else if((robot.pos.x>50 && robot.pos.x<=2*tamCampo.x/3))
-    {
-      cout<<"Quadrante 5"<<endl;
-    }
-    else
-    {
-      cout<<"Quadrante 6"<<endl;
-    }
-  }
-  else if((robot.pos.y>=0 && robot.pos.y<=42))
-  {
-    if((robot.pos.x>=0 && robot.pos.x<=tamCampo.x/3))
-    {
-      cout<<"Quadrante 7"<<endl;
-    }
-    else if((robot.pos.x>50 && robot.pos.x<=2*tamCampo.x/3))
-    {
-      cout<<"Quadrante 8"<<endl;
-    }
-    else
-    {
-      cout<<"Quadrante 9"<<endl;
-
-    }
-  }
-
+  } 
 }
 
-void strategy::striker(Robot robot, Bola ball)
+void strategy::striker(Robot &robot, Bola &ball)
 {
-    //Estratégia do atacante
+  //Estratégia do atacante
+	//Preciso calcular a distância horizontal entre o centroid e a posição do robo, isso me dará o quadrante vertical (dist> 0 && dist <tamCampo/3 // dist>tamCampo/3 && dist<2*tamCampo/3 // dist>2*tamCampo/3 && dist<tamCampo)
+	
+	float horizontalDist = abs(dist(centroidDef, robot.pos) * angle(centroidDef, robot.pos).x);
+
+	if(horizontalDist > 0 && horizontalDist < tamCampo.x/3)
+	{
+		cout<<"Quadrante 1, 4 7"<<endl;
+	}
+	else if(horizontalDist > tamCampo.x/3 && horizontalDist<2*tamCampo.x/3)
+	{
+		cout<<"Quadrante 2, 5, 8"<<endl;
+	}
+	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist < tamCampo.x)	
+	{
+		cout<<"Quadrante 3, 6, 9"<<endl;
+	}
   
 }
 

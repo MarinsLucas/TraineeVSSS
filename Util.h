@@ -15,6 +15,11 @@ struct point2f
   T x,y;  
 };
 
+struct Placar{
+  short a; 
+  short b;
+};
+
 struct Bola{
   point2f<float> pos;
   point2f<float> velocity;
@@ -44,7 +49,7 @@ class util
     float dist(point2f<T> pos, point2f<T> goal);
     template<typename T>
     point2f<T> angle(point2f<T> pos, point2f<T> goal);
-    
+   
 }; 
 
 template<typename T>
@@ -54,7 +59,7 @@ float util::dist(point2f<T> pos, point2f<T> goal)
   cat_a=(goal.x)-(pos.x);
   cat_o=(goal.y)-(pos.y);
   hip=sqrt((cat_a*cat_a)+(cat_o*cat_o));
-return hip;
+	return hip;
 }
 /*vou considerar o robô como ponto, então ele não pode estar virado ao contrário
 procurando o arcsen*/
@@ -68,7 +73,7 @@ point2f<T> util::angle(point2f<T> pos, point2f<T> goal)
   cat_a=(goal.x)-(pos.x);
   sincos.y = (cat_o == 0) ? 0 : cat_o/sqrt((cat_a*cat_a)+(cat_o*cat_o));
   sincos.x = (cat_a == 0) ? 0 : cat_a/sqrt((cat_a*cat_a)+(cat_o*cat_o));  
-return sincos;
+	return sincos;
 }
 
 #endif

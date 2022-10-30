@@ -5,11 +5,6 @@
 
 using namespace std;
 
-struct Placar{
-  short a; 
-  short b;
-};
-
 class Jogo{
   private:
     point2f<int> campo;

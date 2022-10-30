@@ -10,7 +10,7 @@ class strategy : public util
     private:
         Robot teamRobots[3];
         Bola *bola;
-        point2f<int> centroidAtk, centroidDef;   
+        point2f<float> centroidAtk, centroidDef;   
         int direction;
         float deltaTime;
         point2f<int> tamCampo; 
@@ -19,14 +19,13 @@ class strategy : public util
         ~strategy();
         Robot* getTeam();        Robot* getRobot(int index);
         void setBola(Bola &b);
-        void decision(point2f<int> &campSize, Robot *tR, Bola &bola); //ideia: colocar referência para o outro time
+        void decision(point2f<int> &campSize, Robot *tR, Bola &bola);
         void goalKepper(Robot &robot, Bola &ball);
-        void defender(Robot robot, Bola ball);
-        void striker(Robot robot, Bola ball);
+        void defender(Robot &robot, Bola &ball);
+        void striker(Robot &robot, Bola &ball);
         void updateRobot(Robot &robot);
         void setDeltaTime(float dt){deltaTime = dt;};
-        void setCentroid(point2f<int> cA, point2f<int> cD, point2f<int> campSize){centroidAtk = cA; centroidDef = cD; setDirection(); tamCampo = campSize; };
-        void setDirection(){direction = ((centroidAtk.x - centroidDef.x) > 0) ? 1 : -1;};
+        void setCentroid(point2f<float> cA, point2f<float> cD, point2f<int> campSize){centroidAtk = cA; centroidDef = cD; tamCampo = campSize; };
         void kick(Robot &robot, Bola &bola);
 };
 
