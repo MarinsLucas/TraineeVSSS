@@ -44,6 +44,7 @@ class util
     float dist(point2f<T> pos, point2f<T> goal);
     template<typename T>
     point2f<T> angle(point2f<T> pos, point2f<T> goal);
+    
 }; 
 
 template<typename T>

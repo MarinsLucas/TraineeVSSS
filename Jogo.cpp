@@ -19,11 +19,19 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
     bola.pos.y = b.y;
     bola.velocity.x = 10; 
     bola.velocity.y = -10;
-
+    point2f<int> c1,c2; 
+  
+    c1.x = 0;
+    c1.y = 65; 
+    c2.x = 150; 
+    c2.y = 65; 
+    time_1.setCentroid(c1, c2, campo);
+    time_2.setCentroid(c2,c1, campo);
+    
     //Configuração do coeficiente de atrito
     atrito = 9.82*kat; 
     time_1.setDeltaTime(0.5);
-    time_1.setDeltaTime(0.5);
+    time_2.setDeltaTime(0.5);
 
 }
 
@@ -51,7 +59,7 @@ void Jogo::run()
         robot =time_2.getRobot(i);
         cout<<"Robo "<<robot->index<<":\nPos: ("<< robot->pos.x<<","<<robot->pos.y<<")\nGoal: ("<<robot->goal.x<<","<<robot->goal.y<<")"<<endl<<endl;
     }
-  
+   
   //delete robot; 
   
     cout<<"Posição Bola: (" << bola.pos.x << "," << bola.pos.y << ")" << endl;
