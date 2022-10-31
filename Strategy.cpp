@@ -66,7 +66,7 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
 		cout<<"Quadrante 1, 2, 5, 7, 8"<<endl;
 		//Ele tem que entrar na frente da bola
-		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime + direction*4);
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
 		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
 				
 		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
