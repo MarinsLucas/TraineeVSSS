@@ -35,7 +35,8 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
 			robot.goal.y = tamCampo.y/3;
   else if(bola.pos.y < robot.pos.y)
   {
-    robot.goal.y = bola.pos.y;   } 
+    robot.goal.y = bola.pos.y;   
+	}
   else if(bola.pos.y > robot.pos.y)
   {
     robot.goal.y = bola.pos.y;   }
@@ -122,9 +123,18 @@ void strategy::striker(Robot &robot, Bola &ball)
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
     goalKepper(tR[0], bola);
-    defender(tR[1], bola);
-    //striker(tR[0], bola);
-    
+
+		if(tR[1].pos.x < tR[2].pos.x)
+		{
+			defender(tR[1], bola);
+			//striker(tR[2], bola);
+		}
+		else
+		{
+			defender(tR[1], bola);
+			//striker(tR[1], bola);
+		}
+    //striker(tR[0], bola);    
 
     //Verifica as posições dos jogadores, para que não saiam do campo
     for(auto robot : teamRobots)
@@ -171,8 +181,9 @@ void strategy::updateRobot(Robot &robot)
 
 void strategy::kick(Robot &robot, Bola &bola)
 {
-  //cout<<"OLHA O CHUUTE"<<endl; 
+  cout<<"OLHA O CHUUTE"<<endl; 
   
   bola.velocity.y = angle(robot.pos, bola.pos).x * 10;
   bola.velocity.x = angle(robot.pos, bola.pos).y * 10;
 }
+
