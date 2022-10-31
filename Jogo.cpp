@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Jogo.h"
 
-Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
+Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
 {
     //Configuração do critério de parada
     criterioParada = cP;
@@ -35,6 +35,9 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
     time_1.setDeltaTime(0.5);
     time_2.setDeltaTime(0.5);
 
+    //print frameByFrame
+    printFrameByFrame = bFbF;
+
 }
 
 Jogo::~Jogo()
@@ -42,38 +45,78 @@ Jogo::~Jogo()
         //~Util time2
 }
 
+void Jogo::printFrame()
+{
+  bool success;
+  StringReference *errorMessage = CreateStringReferenceLengthValue(0, L' ');
+  RGBABitmapImageReference *imageReference = CreateRGBABitmapImageReference();
+  imageReference->image = CreateImage(1080, 720, GetWhite());
+
+  vector<double> xs{time_1.getRobot(0)->pos.x, time_1.getRobot(1)->pos.x, time_1.getRobot(2)->pos.x};
+  vector<double> ys{time_1.getRobot(0)->pos.y, time_1.getRobot(1)->pos.y, time_1.getRobot(2)->pos.y};
+
+  //imprime time 1
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(1.0 , 0.0 , 0.0));
+
+  //imprime time 2
+  xs = {time_2.getRobot(0)->pos.x, time_2.getRobot(1)->pos.x, time_2.getRobot(2)->pos.x};
+  ys = {time_2.getRobot(0)->pos.y, time_2.getRobot(1)->pos.y, time_2.getRobot(2)->pos.y};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0.0 , 0.0 , 1.0));
+  
+  //imprime bola
+  xs = {bola.pos.x};
+  ys = {bola.pos.y};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0.0 , 0.0 , 0.0));
+
+  if(success){
+  vector<double> *pngdata = ConvertToPNG(imageReference->image);
+  WriteToFile(pngdata, "example1.png");
+  DeleteImage(imageReference->image);
+  }else{
+    cerr << "Error: ";
+    for(wchar_t c : *errorMessage->string){
+      wcerr << c;
+    }
+    cerr << endl;
+  }
+
+	FreeAllocations();
+}
+
 void Jogo::run()
 {
-    time_1.decision(campo, time_1.getTeam(), bola);
-    time_2.decision(campo, time_2.getTeam(), bola);
+  time_1.decision(campo, time_1.getTeam(), bola);
+  time_2.decision(campo, time_2.getTeam(), bola);
+
+  cout<<"Time 1"<<endl;
+  Robot *robot;
+  for(int i =0; i< 3;i++)
+  {
+      robot =time_1.getRobot(i);
+      cout<<"Robo "<<robot->index<<":\nPos: ("<< robot->pos.x<<","<<robot->pos.y<<")\nGoal: ("<<robot->goal.x<<","<<robot->goal.y<<")"<<endl<<endl;
+  }
+
+  cout<<"Time 2"<<endl;
+  for(int i =0; i< 3;i++)
+  {
+      robot =time_2.getRobot(i);
+      cout<<"Robo "<<robot->index<<":\nPos: ("<< robot->pos.x<<","<<robot->pos.y<<")\nGoal: ("<<robot->goal.x<<","<<robot->goal.y<<")"<<endl<<endl;
+  }
   
-    cout<<"Time 1"<<endl;
-    Robot *robot;
-    for(int i =0; i< 3;i++)
-    {
-        robot =time_1.getRobot(i);
-        cout<<"Robo "<<robot->index<<":\nPos: ("<< robot->pos.x<<","<<robot->pos.y<<")\nGoal: ("<<robot->goal.x<<","<<robot->goal.y<<")"<<endl<<endl;
-    }
-  
-    cout<<"Time 2"<<endl;
-    for(int i =0; i< 3;i++)
-    {
-        robot =time_2.getRobot(i);
-        cout<<"Robo "<<robot->index<<":\nPos: ("<< robot->pos.x<<","<<robot->pos.y<<")\nGoal: ("<<robot->goal.x<<","<<robot->goal.y<<")"<<endl<<endl;
-    }
-   
   //delete robot; 
+
+  cout<<"Posição Bola: (" << bola.pos.x << "," << bola.pos.y << ")" << endl;
+  cout<<"Velocidade Bola: ("<<bola.velocity.x <<","<<bola.velocity.y<<")"<<endl;
   
-    cout<<"Posição Bola: (" << bola.pos.x << "," << bola.pos.y << ")" << endl;
-    cout<<"Velocidade Bola: ("<<bola.velocity.x <<","<<bola.velocity.y<<")"<<endl;
-    
-    uptadeBall(0.5);
+  uptadeBall(0.5);
+
+  if(checkState(placar))
+  {
+      gameOver();
+  }
   
-    if(checkState(placar))
-    {
-        gameOver();
-    }
-  
+  if(printFrameByFrame)
+    printFrame();
   
   return;
 }

@@ -2,6 +2,8 @@
 #define JOGO_H
 
 #include "Strategy.h"
+#include "pbPlots.hpp"
+#include "supportLib.hpp"
 
 using namespace std;
 
@@ -14,8 +16,9 @@ class Jogo{
     int criterioParada;  // quantidade máxima de gols
     Bola bola;      //Bola
     float atrito;   //coeficiente de atrito entre bola e campo
+    bool printFrameByFrame; 
   public:
-    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b);
+    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF);
     ~Jogo();
     bool checkState(Placar atual);
     void gameOver(); 
@@ -23,6 +26,7 @@ class Jogo{
     bool attackFault(strategy time);
     bool defenseFault(strategy time);
     void run();
+    void printFrame();
 };
 
  #endif

@@ -1,5 +1,6 @@
 #include "Jogo.h"
 
+
 using namespace std;
 
 int main()
@@ -11,11 +12,11 @@ int main()
     bola.y = 130/2 ; 
 
 		//Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
-    Jogo jogo(5, 130, 150, 0.01, bola);
+    Jogo jogo(5, 130, 150, 0.01, bola, true);
 
     for(int i=0;i<100;i++)
     {
         jogo.run();
         cin >> a;
     }
-}
+} 
