@@ -68,18 +68,25 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Ele tem que entrar na frente da bola
 		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
 		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
+		if(bola.pos.y == tamCampo.y)
+		{
+			robot.goal.y -=5;
+		}else if(bola.pos.y == 0)
+		{
+			robot.goal.y += 5;
+		}
 				
 		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
 		{
 			cout<<"Quadrante 4"<<endl;
-			if(robot.goal.x <= 15)
+			if(abs(dist(robot.goal, centroidDef) * angle(robot.goal, centroidDef).y) <= 15)
 			{
 				//robo sai do meio
-				robot.goal.x = 15; 
+				robot.goal.x = centroidDef.x + direction * 15; 
 				
-				if(bola.pos.x < 15)
+				if(abs(dist(bola.pos, centroidDef) * angle(bola.pos, centroidDef).y) <= 15)
 				{
-					robot.pos.y = bola.pos.y + 4;
+					robot.goal.y = bola.pos.y + 10;
 				}
 			}
 		}
@@ -122,7 +129,7 @@ void strategy::striker(Robot &robot, Bola &ball)
 
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
-    goalKepper(tR[0], bola);
+    //goalKepper(tR[0], bola);
 
 		if(tR[1].pos.x < tR[2].pos.x)
 		{
