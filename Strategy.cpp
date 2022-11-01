@@ -129,7 +129,7 @@ void strategy::striker(Robot &robot, Bola &ball)
 
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
-    //goalKepper(tR[0], bola);
+    goalKepper(tR[0], bola);
 
 		if(tR[1].pos.x < tR[2].pos.x)
 		{

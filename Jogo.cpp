@@ -47,26 +47,41 @@ Jogo::~Jogo()
 
 void Jogo::printFrame()
 {
+  //Preciso imprimir apenas os pontos.
   bool success;
   StringReference *errorMessage = CreateStringReferenceLengthValue(0, L' ');
   RGBABitmapImageReference *imageReference = CreateRGBABitmapImageReference();
   imageReference->image = CreateImage(1080, 720, GetWhite());
+  DrawCircle(imageReference->image, 1080/2, 720/2, 70, GetBlack());
+  //linha de centro
+  vector<double> xs{(double)campo.x/2, (double)campo.x/2};
+  vector<double> ys{0, (double)campo.y};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, GetBlack(), true);
 
-  vector<double> xs{time_1.getRobot(0)->pos.x, time_1.getRobot(1)->pos.x, time_1.getRobot(2)->pos.x};
-  vector<double> ys{time_1.getRobot(0)->pos.y, time_1.getRobot(1)->pos.y, time_1.getRobot(2)->pos.y};
+  //área esquerda
+  xs ={0, 15, 15, 0};
+  ys ={30, 30 , 100, 100};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, GetBlack(), true);
 
-  //imprime time 1
-  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(1.0 , 0.0 , 0.0));
+  //área direita
+  xs = {150, 150-15, 150-15, 150};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, GetBlack(), true);
 
-  //imprime time 2
+  //time 1
+  xs={time_1.getRobot(0)->pos.x, time_1.getRobot(1)->pos.x, time_1.getRobot(2)->pos.x};
+  ys={time_1.getRobot(0)->pos.y, time_1.getRobot(1)->pos.y, time_1.getRobot(2)->pos.y};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage,  CreateRGBColor(1.0 , 0.0 , 0.0), false);
+
+  //time 2
   xs = {time_2.getRobot(0)->pos.x, time_2.getRobot(1)->pos.x, time_2.getRobot(2)->pos.x};
   ys = {time_2.getRobot(0)->pos.y, time_2.getRobot(1)->pos.y, time_2.getRobot(2)->pos.y};
-  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0.0 , 0.0 , 1.0));
-  
-  //imprime bola
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage,  CreateRGBColor(0.0 , 0.0 , 1.0), false);
+
+  //bola
   xs = {bola.pos.x};
   ys = {bola.pos.y};
-  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0.0 , 0.0 , 0.0));
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage,  GetBlack(), false);
+
 
   if(success){
   vector<double> *pngdata = ConvertToPNG(imageReference->image);
