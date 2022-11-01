@@ -293,7 +293,7 @@ void DrawTextUpwards(RGBABitmapImage *canvas, double x, double y, std::vector<wc
 
 ScatterPlotSettings *GetDefaultScatterPlotSettings();
 ScatterPlotSeries *GetDefaultScatterPlotSeriesSettings();
-bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, std::vector<double> *xs, std::vector<double> *ys, StringReference *errorMessage, RGBA *color);
+bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, std::vector<double> *xs, std::vector<double> *ys, StringReference *errorMessage, RGBA *color, bool lI);
 bool DrawScatterPlotFromSettings(RGBABitmapImageReference *canvasReference, ScatterPlotSettings *settings, StringReference *errorMessage);
 void ComputeBoundariesBasedOnSettings(ScatterPlotSettings *settings, Rectangle *boundaries);
 bool ScatterPlotFromSettingsValid(ScatterPlotSettings *settings, StringReference *errorMessage);
