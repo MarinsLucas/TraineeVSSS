@@ -17,8 +17,8 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
     //Configuração da bola
     bola.pos.x = b.x; 
     bola.pos.y = b.y;
-    bola.velocity.x = 10; 
-    bola.velocity.y = 5;
+    bola.velocity.x = 0; 
+    bola.velocity.y = 0;
     point2f<float> c1,c2; 
   
     c1.x = 0;

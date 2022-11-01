@@ -8,7 +8,7 @@ int main()
     int a;
 	
     point2f<float> bola; 
-    bola.x = 150/2; 
+    bola.x = 150-15; 
     bola.y = 130/2 ; 
 
 		//Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b)
