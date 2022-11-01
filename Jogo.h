@@ -18,7 +18,7 @@ class Jogo{
     float atrito;   //coeficiente de atrito entre bola e campo
     bool printFrameByFrame; 
   public:
-    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF);
+    Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF, strategy &time1, strategy &time2);
     ~Jogo();
     bool checkState(Placar atual);
     void gameOver(); 
@@ -26,7 +26,10 @@ class Jogo{
     bool attackFault(strategy time);
     bool defenseFault(strategy time);
     void run();
+    void resetInitialPos();
     void printFrame();
+    void restartJogo();
+    void goal();
 };
 
  #endif

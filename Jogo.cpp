@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Jogo.h"
 
-Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
+Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF, strategy &time1, strategy &time2)
 {
     //Configuração do critério de parada
     criterioParada = cP;
@@ -20,6 +20,9 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
     bola.velocity.x = 0; 
     bola.velocity.y = 0;
     point2f<float> c1,c2; 
+
+    time_1 = time1;
+    time_2 = time2; 
   
     c1.x = 0;
     c1.y = 65; 
@@ -35,6 +38,8 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
     time_1.setDeltaTime(0.5);
     time_2.setDeltaTime(0.5);
 
+    time_1.resetInitialPos();
+    time_2.resetInitialPos();
     //print frameByFrame
     printFrameByFrame = bFbF;
 
@@ -43,6 +48,23 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF)
 Jogo::~Jogo()
 {
         //~Util time2
+}
+
+void Jogo::restartJogo()
+{
+  bola.pos.x = campo.x/2; 
+  bola.pos.y = campo.y/2;
+  bola.velocity.x = 0; 
+  bola.velocity.y = 0;
+
+  time_1.resetInitialPos();
+  time_2.resetInitialPos();
+
+}
+
+void Jogo::goal()
+{
+  restartJogo();
 }
 
 void Jogo::printFrame()
@@ -85,6 +107,29 @@ void Jogo::printFrame()
 
 void Jogo::run()
 {
+  if(placar.a >= criterioParada)
+  {
+    cout<<"Vitória do time 1"<<endl;
+    gameOver();
+  }
+  if(placar.b >= criterioParada)
+  {
+    cout<<"Vitória do time 2"<<endl;
+    gameOver();
+  }
+  if(bola.pos.x == time_1.getCentroid().x && (bola.pos.y > time_1.getCentroid().y-20 && bola.pos.y < time_1.getCentroid().y+20))
+  {
+    cout<<"Goooooool do time 1"<<endl;
+    goal();
+    placar.a++;
+  }
+  if(bola.pos.x == time_2.getCentroid().x && (bola.pos.y > time_2.getCentroid().y-20 && bola.pos.y < time_2.getCentroid().y+20))
+  {
+    cout<<"Gol do time 2"<<endl;
+    goal();
+    placar.b++;
+  }
+
   time_1.decision(campo, time_1.getTeam(), bola);
   time_2.decision(campo, time_2.getTeam(), bola);
 

@@ -5,13 +5,13 @@
 using namespace std;
 
 strategy::strategy(){
-    teamRobots[0].pos.x = 100;
-    teamRobots[1].pos.x = 100;
-    teamRobots[2].pos.x = 100;
+    teamRobots[0].pos.x = 75;
+    teamRobots[1].pos.x = 75;
+    teamRobots[2].pos.x = 75;
 
-    teamRobots[0].pos.y = 75;
-    teamRobots[1].pos.y = 50;
-    teamRobots[2].pos.y = 100; 
+    teamRobots[0].pos.y = 65;
+    teamRobots[1].pos.y = 65;
+    teamRobots[2].pos.y = 65; 
 
     teamRobots[0].index = 1; 
     teamRobots[1].index = 2; 
@@ -221,3 +221,16 @@ void strategy::kick(Robot &robot, Bola &bola)
   bola.velocity.x = angle(robot.pos, bola.pos).x * 10;
 }
 
+void strategy::setInitialPos(vector<point2f<float>> iPos)
+{
+	initialPos[0] = iPos.at(0);
+	initialPos[1] = iPos.at(1);
+	initialPos[2] = iPos.at(2);
+};
+
+void strategy::resetInitialPos()
+{
+	teamRobots[0].pos = initialPos[0];
+	teamRobots[1].pos = initialPos[1];
+	teamRobots[2].pos = initialPos[2];
+}
