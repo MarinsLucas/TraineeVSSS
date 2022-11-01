@@ -47,7 +47,7 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
   robot.goal.x = centroidDef.x; 
 
   //chuta a bola, caso ela esteja próxima o suficiente
-  if(dist(robot.pos, bola.pos) < 4) kick(robot, bola);
+  if(dist(robot.pos, bola.pos) < 10) kick(robot, bola);
   
   updateRobot(robot);
 }
@@ -66,7 +66,7 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
 		cout<<"Quadrante 1, 2, 5, 7, 8"<<endl;
 		//Ele tem que entrar na frente da bola
-		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*3);
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
 		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
 				
 		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
@@ -93,7 +93,7 @@ void strategy::defender(Robot &robot, Bola &bola)
     robot.goal.y = bola.pos.y + bola.velocity.y * deltaTime;
   } 
 
-	if(dist(robot.pos, bola.pos)<4 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+	if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
 
 	updateRobot(robot);
 }
@@ -177,13 +177,36 @@ void strategy::updateRobot(Robot &robot)
 	
   robot.pos.x += robot.velocity.x*deltaTime;   
   robot.pos.y += robot.velocity.y*deltaTime; 
+
+	if(robot.pos.x > tamCampo.x)
+	{
+		robot.pos.x = tamCampo.x;
+		robot.velocity.x = 0;
+	}
+	else if(robot.pos.x < 0)
+	{
+		robot.pos.x = tamCampo.x;
+		robot.velocity.x = 0;
+	}
+
+	if(robot.pos.y > tamCampo.y)
+	{
+		robot.pos.y = tamCampo.y;
+		robot.velocity.y = 0;
+	}
+	else if(robot.pos.y < 0)
+	{
+		robot.pos.y = tamCampo.y;
+		robot.velocity.y = 0;
+	}
 }
 
 void strategy::kick(Robot &robot, Bola &bola)
 {
   cout<<"OLHA O CHUUTE"<<endl; 
   
-  bola.velocity.y = angle(robot.pos, bola.pos).x * 10;
-  bola.velocity.x = angle(robot.pos, bola.pos).y * 10;
+  bola.velocity.y = angle(robot.pos, bola.pos).y * 10;
+  bola.velocity.x = angle(robot.pos, bola.pos).x * 10;
 }
+
 
