@@ -68,25 +68,18 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Ele tem que entrar na frente da bola
 		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
 		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
-		if(bola.pos.y == tamCampo.y)
-		{
-			robot.goal.y -=5;
-		}else if(bola.pos.y == 0)
-		{
-			robot.goal.y += 5;
-		}
 				
 		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
 		{
 			cout<<"Quadrante 4"<<endl;
-			if(abs(dist(robot.goal, centroidDef) * angle(robot.goal, centroidDef).y) <= 15)
+			if(robot.goal.x <= 15)
 			{
 				//robo sai do meio
-				robot.goal.x = centroidDef.x + direction * 15; 
+				robot.goal.x = 15; 
 				
-				if(abs(dist(bola.pos, centroidDef) * angle(bola.pos, centroidDef).y) <= 15)
+				if(bola.pos.x < 15)
 				{
-					robot.goal.y = bola.pos.y + 10;
+					robot.pos.y = bola.pos.y + 4;
 				}
 			}
 		}
@@ -105,7 +98,7 @@ void strategy::defender(Robot &robot, Bola &bola)
 	updateRobot(robot);
 }
 
-void strategy::striker(Robot &robot, Bola &ball)
+void strategy::striker(Robot &robot, Bola &bola)
 {
   //Estratégia do atacante
 	//Preciso calcular a distância horizontal entre o centroid e a posição do robo, isso me dará o quadrante vertical (dist> 0 && dist <tamCampo/3 // dist>tamCampo/3 && dist<2*tamCampo/3 // dist>2*tamCampo/3 && dist<tamCampo)
@@ -114,10 +107,22 @@ void strategy::striker(Robot &robot, Bola &ball)
 
 	if(horizontalDist > 0 && horizontalDist < tamCampo.x/3)
 	{
+    if(bola.pos.y == 130)
+    {
+      robot.pos.y=bola.pos.y;
+    }
+    else
+    {
+      robot.pos.y=bola.pos.y + 1;
+    }
+    
+    //meu robo não entra na área de defesa
 		cout<<"Quadrante 1, 4 7"<<endl;
 	}
+    
 	else if(horizontalDist > tamCampo.x/3 && horizontalDist<2*tamCampo.x/3)
 	{
+    
 		cout<<"Quadrante 2, 5, 8"<<endl;
 	}
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist < tamCampo.x)	
@@ -129,7 +134,7 @@ void strategy::striker(Robot &robot, Bola &ball)
 
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
-    //goalKepper(tR[0], bola);
+    goalKepper(tR[0], bola);
 
 		if(tR[1].pos.x < tR[2].pos.x)
 		{
@@ -203,7 +208,7 @@ void strategy::updateRobot(Robot &robot)
 	}
 	else if(robot.pos.y < 0)
 	{
-		robot.pos.y = tamCampo.y;
+		robot.pos.y = 0;
 		robot.velocity.y = 0;
 	}
 }
@@ -215,5 +220,4 @@ void strategy::kick(Robot &robot, Bola &bola)
   bola.velocity.y = angle(robot.pos, bola.pos).y * 10;
   bola.velocity.x = angle(robot.pos, bola.pos).x * 10;
 }
-
 
