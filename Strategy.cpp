@@ -29,23 +29,32 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
 {
     //Estratégia do Goleiro
     //o goleiro vai de 42 até 86 (área do gol)
-  if(bola.pos.y > 2*tamCampo.y/3) 
-			robot.goal.y = 2*tamCampo.y/3;
-  else if(bola.pos.y < tamCampo.y/3) 
-			robot.goal.y = tamCampo.y/3;
-  else if(bola.pos.y < robot.pos.y)
-  {
-    robot.goal.y = bola.pos.y;   
+	float horizontalDist = abs(dist(centroidDef, bola.pos) * angle(centroidDef, bola.pos).x);
+	
+	if(horizontalDist < tamCampo.x/3)
+	{
+  	if(bola.pos.y > 2*tamCampo.y/3) 
+				robot.goal.y = 2*tamCampo.y/3;
+	  else if(bola.pos.y < tamCampo.y/3) 
+				robot.goal.y = tamCampo.y/3;
+	  else if(bola.pos.y < robot.pos.y)
+	  {
+	    robot.goal.y = bola.pos.y;   
+		}
+	  else if(bola.pos.y > robot.pos.y)
+	  {
+	    robot.goal.y = bola.pos.y;   }
+	  else
+	  {
+	    robot.goal = robot.pos; 
+	  } 
+	  robot.goal.x = centroidDef.x; 
 	}
-  else if(bola.pos.y > robot.pos.y)
-  {
-    robot.goal.y = bola.pos.y;   }
-  else
-  {
-    robot.goal = robot.pos; 
-  } 
-  robot.goal.x = centroidDef.x; 
-
+	else
+	{
+		robot.goal.x = robot.pos.x; 
+		robot.goal.y = tamCampo.y/2;
+	}
   //chuta a bola, caso ela esteja próxima o suficiente
   if(dist(robot.pos, bola.pos) < 10) kick(robot, bola);
   
