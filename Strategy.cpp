@@ -65,8 +65,7 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Nessa linha, eu acho interessante ele evitar entrar dentro da área do gol. 
 		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
 		cout<<"Quadrante 1, 2, 5, 7, 8"<<endl;
-		//Ele tem que entrar na frente da bola
-		
+		//Ele tem que entrar na frente da bola		
 
 		if(bola.pos.y < tamCampo.y/3)
 		{
@@ -158,6 +157,7 @@ void strategy::striker(Robot &robot, Bola &bola)
 			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
 			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
 		}
+    
 		cout<<"Quadrante 2, 5, 8"<<endl;
 	}
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist < tamCampo.x)	
@@ -247,6 +247,7 @@ void strategy::updateRobot(Robot &robot)
 	else if(robot.pos.y < 0.1)
 	{
 		robot.pos.y = 0.1;
+
 		robot.velocity.y = 0;
 	}
 }
@@ -272,4 +273,3 @@ void strategy::resetInitialPos()
 	teamRobots[1].pos = initialPos[1];
 	teamRobots[2].pos = initialPos[2];
 }
-
