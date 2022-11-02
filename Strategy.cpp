@@ -5,13 +5,13 @@
 using namespace std;
 
 strategy::strategy(){
-    teamRobots[0].pos.x = 100;
-    teamRobots[1].pos.x = 100;
-    teamRobots[2].pos.x = 100;
+    teamRobots[0].pos.x = 75;
+    teamRobots[1].pos.x = 75;
+    teamRobots[2].pos.x = 75;
 
-    teamRobots[0].pos.y = 75;
-    teamRobots[1].pos.y = 50;
-    teamRobots[2].pos.y = 100; 
+    teamRobots[0].pos.y = 65;
+    teamRobots[1].pos.y = 65;
+    teamRobots[2].pos.y = 65; 
 
     teamRobots[0].index = 1; 
     teamRobots[1].index = 2; 
@@ -65,9 +65,28 @@ void strategy::defender(Robot &robot, Bola &bola)
 		//Nessa linha, eu acho interessante ele evitar entrar dentro da área do gol. 
 		//Se manter sempre de maneira com que robot.pox.x < bola.pos.x -> para caso ele vá chutar, ele chute para frente. 
 		cout<<"Quadrante 1, 2, 5, 7, 8"<<endl;
-		//Ele tem que entrar na frente da bola
-		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
-		robot.goal.y = (bola.pos.y + bola.velocity.y*deltaTime);
+		//Ele tem que entrar na frente da bola		
+
+		if(bola.pos.y < tamCampo.y/3)
+		{
+			//Quadrante 1,2,3
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime + 2;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y> robot.pos.y) kick(robot, bola);
+		} else if( bola.pos.y > 2*tamCampo.y/3)
+		{
+			//Quadrante 7,8,9
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime -2;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y < robot.pos.y) kick(robot, bola);
+		}
+		else
+		{
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+		}
+		cout<<"Quadrante 2, 5, 8"<<endl;
 				
 		if((bola.pos.y>tamCampo.y/3 && bola.pos.y<=2*tamCampo.y/3))
 		{
@@ -87,66 +106,85 @@ void strategy::defender(Robot &robot, Bola &bola)
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist <= tamCampo.x)
   {
     cout<<"Quadrante 3, 6 ou 9"<<endl; 
-		
- 	 //Estratégia do Zagueiro Descansando
-    robot.goal.x = tamCampo.x/2;
-    robot.goal.y = bola.pos.y + bola.velocity.y * deltaTime;
-  } 
+		if(bola.pos.y < tamCampo.y/3)
+		{
+		//Quadrante 1,2,3
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+		robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime + 2;
+		if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y> robot.pos.y) kick(robot, bola);
+		} else if( bola.pos.y > 2*tamCampo.y/3)
+		{
+		//Quadrante 7,8,9
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+		robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime -2;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y < robot.pos.y) kick(robot, bola);
+		} 	
+		else
+		{
+			robot.goal.x = bola.pos.x + bola.velocity.x*deltaTime - direction*4;
+			robot.goal.y = bola.pos.y + bola.velocity.x*deltaTime*1.5; 
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+		}
+	} 
 
-	if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+	
 
 	updateRobot(robot);
 }
 
 void strategy::striker(Robot &robot, Bola &bola)
 {
-  //Estratégia do atacante
-	//Preciso calcular a distância horizontal entre o centroid e a posição do robo, isso me dará o quadrante vertical (dist> 0 && dist <tamCampo/3 // dist>tamCampo/3 && dist<2*tamCampo/3 // dist>2*tamCampo/3 && dist<tamCampo)
-	
-	float horizontalDist = abs(dist(centroidDef, robot.pos) * angle(centroidDef, robot.pos).x);
+	float horizontalDist = abs(dist(centroidDef, bola.pos) * angle(centroidDef, bola.pos).x);
 
 	if(horizontalDist > 0 && horizontalDist < tamCampo.x/3)
 	{
-    if(bola.pos.y == 130)
-    {
-      robot.pos.y=bola.pos.y;
-    }
-    else
-    {
-      robot.pos.y=bola.pos.y + 1;
-    }
-    
-    //meu robo não entra na área de defesa
-		cout<<"Quadrante 1, 4 7"<<endl;
+	  //atacante descansando
+	  robot.goal.x = robot.pos.x;
+    robot.goal.y = bola.pos.y + bola.velocity.y * deltaTime;
+		cout<<"Quadrante 1, 4, 7"<<endl;
 	}
     
 	else if(horizontalDist > tamCampo.x/3 && horizontalDist<2*tamCampo.x/3)
 	{
+		if(bola.pos.y < tamCampo.y/3 || bola.pos.y > 2*tamCampo.y/3)
+		{
+			//Quadrante oito ou 2
+			robot.goal.x = bola.pos.x;
+			robot.goal.y = tamCampo.y/2;
+		} else
+		{
+			//Quadrante 5
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
+		}
     
 		cout<<"Quadrante 2, 5, 8"<<endl;
 	}
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist < tamCampo.x)	
 	{
+    if(bola.pos.y < tamCampo.y/3 || bola.pos.y > 2*tamCampo.y/3)
+		{
+			//Quadrante oito ou 9
+			robot.goal.x = bola.pos.x;
+			robot.goal.y = tamCampo.y/2;
+		} else
+		{
+			//Quadrante 6
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
+		}
 		cout<<"Quadrante 3, 6, 9"<<endl;
 	}
-  
+	
+if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
+updateRobot(robot);
 }
 
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
     goalKepper(tR[0], bola);
-
-		if(tR[1].pos.x < tR[2].pos.x)
-		{
-			defender(tR[1], bola);
-			//striker(tR[2], bola);
-		}
-		else
-		{
-			defender(tR[1], bola);
-			//striker(tR[1], bola);
-		}
-    //striker(tR[0], bola);    
+		defender(tR[1], bola);
+    striker(tR[2], bola);    
 
     //Verifica as posições dos jogadores, para que não saiam do campo
     for(auto robot : teamRobots)
@@ -195,9 +233,9 @@ void strategy::updateRobot(Robot &robot)
 		robot.pos.x = tamCampo.x;
 		robot.velocity.x = 0;
 	}
-	else if(robot.pos.x < 0)
+	else if(robot.pos.x < 0.1)
 	{
-		robot.pos.x = tamCampo.x;
+		robot.pos.x = 0.1;
 		robot.velocity.x = 0;
 	}
 
@@ -206,9 +244,10 @@ void strategy::updateRobot(Robot &robot)
 		robot.pos.y = tamCampo.y;
 		robot.velocity.y = 0;
 	}
-	else if(robot.pos.y < 0)
+	else if(robot.pos.y < 0.1)
 	{
-		robot.pos.y = 0;
+		robot.pos.y = 0.1;
+
 		robot.velocity.y = 0;
 	}
 }
@@ -217,7 +256,20 @@ void strategy::kick(Robot &robot, Bola &bola)
 {
   cout<<"OLHA O CHUUTE"<<endl; 
   
-  bola.velocity.y = angle(robot.pos, bola.pos).y * 10;
-  bola.velocity.x = angle(robot.pos, bola.pos).x * 10;
+  bola.velocity.y = angle(robot.pos, bola.pos).y * 20;
+  bola.velocity.x = angle(robot.pos, bola.pos).x * 20;
 }
 
+void strategy::setInitialPos(vector<point2f<float>> iPos)
+{
+	initialPos[0] = iPos.at(0);
+	initialPos[1] = iPos.at(1);
+	initialPos[2] = iPos.at(2);
+};
+
+void strategy::resetInitialPos()
+{
+	teamRobots[0].pos = initialPos[0];
+	teamRobots[1].pos = initialPos[1];
+	teamRobots[2].pos = initialPos[2];
+}

@@ -649,7 +649,7 @@ ScatterPlotSeries *GetDefaultScatterPlotSeriesSettings(){
 
   series = Allocate<ScatterPlotSeries>();
 
-  series->linearInterpolation = false;
+  series->linearInterpolation = true;
   series->pointType = toVector(L"dots");
   series->lineType = toVector(L"solid");
   series->lineThickness = 1.0;
@@ -659,7 +659,7 @@ ScatterPlotSeries *GetDefaultScatterPlotSeriesSettings(){
 
   return series;
 }
-bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, vector<double> *xs, vector<double> *ys, StringReference *errorMessage, RGBA *color){
+bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, vector<double> *xs, vector<double> *ys, StringReference *errorMessage, RGBA *color, bool lI){
   ScatterPlotSettings *settings;
   bool success;
 
@@ -674,6 +674,7 @@ bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, do
   Free(settings->scatterPlotSeries->at(0)->ys);
   settings->scatterPlotSeries->at(0)->ys = ys;
   settings->scatterPlotSeries->at(0)->color = color; 
+  settings->scatterPlotSeries->at(0)->linearInterpolation = lI;
 
   success = DrawScatterPlotFromSettings(canvasReference, settings, errorMessage);
 
@@ -962,7 +963,7 @@ if(settings->yAxisLeft){
           xPrev = x;
           yPrev = y;
         }
-      }else{
+      }else{ 
         for(i = 0.0; i < xs->size(); i = i + 1.0){
           x = xs->at(i);
           y = ys->at(i);
@@ -971,28 +972,8 @@ if(settings->yAxisLeft){
 
             x = floor(MapXCoordinate(x, xMin, xMax, xPixelMin, xPixelMax));
             y = floor(MapYCoordinate(y, yMin, yMax, yPixelMin, yPixelMax));
-
-            if(aStringsEqual(sp->pointType, toVector(L"crosses"))){
-              DrawPixel(canvas, x, y, sp->color);
-              DrawPixel(canvas, x + 1.0, y, sp->color);
-              DrawPixel(canvas, x + 2.0, y, sp->color);
-              DrawPixel(canvas, x - 1.0, y, sp->color);
-              DrawPixel(canvas, x - 2.0, y, sp->color);
-              DrawPixel(canvas, x, y + 1.0, sp->color);
-              DrawPixel(canvas, x, y + 2.0, sp->color);
-              DrawPixel(canvas, x, y - 1.0, sp->color);
-              DrawPixel(canvas, x, y - 2.0, sp->color);
-            }else if(aStringsEqual(sp->pointType, toVector(L"circles"))){
-              DrawCircle(canvas, x, y, 3.0, sp->color);
-            }else if(aStringsEqual(sp->pointType, toVector(L"dots"))){
-              DrawFilledCircle(canvas, x, y, 3.0, sp->color);
-            }else if(aStringsEqual(sp->pointType, toVector(L"triangles"))){
-              DrawTriangle(canvas, x, y, 3.0, sp->color);
-            }else if(aStringsEqual(sp->pointType, toVector(L"filled triangles"))){
-              DrawFilledTriangle(canvas, x, y, 3.0, sp->color);
-            }else if(aStringsEqual(sp->pointType, toVector(L"pixels"))){
-              DrawPixel(canvas, x, y, sp->color);
-            }
+          
+            DrawFilledCircle(canvas, x, y, 3.0, sp->color);
           }
         }
       }
@@ -1619,7 +1600,7 @@ double test(){
   ys->at(2) =  -2.0;
   ys->at(3) =  -1.0;
   ys->at(4) = 2.0;
-  success = DrawScatterPlot(imageReference, 800.0, 600.0, xs, ys, errorMessage, CreateRGBColor(1.0,0.0,0.0));
+  success = DrawScatterPlot(imageReference, 800.0, 600.0, xs, ys, errorMessage, CreateRGBColor(1.0,0.0,0.0), true);
 
   AssertTrue(success, failures);
 
