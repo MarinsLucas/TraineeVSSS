@@ -3,6 +3,7 @@
 
 #include<cmath>
 #include <iostream>
+#include<vector>
 
 #define ROBOT_MAX_VELOCITY 10.0
 
