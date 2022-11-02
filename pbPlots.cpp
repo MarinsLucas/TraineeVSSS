@@ -659,7 +659,7 @@ ScatterPlotSeries *GetDefaultScatterPlotSeriesSettings(){
 
   return series;
 }
-bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, vector<double> *xs, vector<double> *ys, StringReference *errorMessage, RGBA *color, bool lI){
+bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, double height, vector<double> *xs, vector<double> *ys, StringReference *errorMessage, RGBA *color, bool lI, vector<wchar_t> *title){
   ScatterPlotSettings *settings;
   bool success;
 
@@ -675,6 +675,7 @@ bool DrawScatterPlot(RGBABitmapImageReference *canvasReference, double width, do
   settings->scatterPlotSeries->at(0)->ys = ys;
   settings->scatterPlotSeries->at(0)->color = color; 
   settings->scatterPlotSeries->at(0)->linearInterpolation = lI;
+  settings->title = title;
 
   success = DrawScatterPlotFromSettings(canvasReference, settings, errorMessage);
 
@@ -1600,7 +1601,7 @@ double test(){
   ys->at(2) =  -2.0;
   ys->at(3) =  -1.0;
   ys->at(4) = 2.0;
-  success = DrawScatterPlot(imageReference, 800.0, 600.0, xs, ys, errorMessage, CreateRGBColor(1.0,0.0,0.0), true);
+  //success = DrawScatterPlot(imageReference, 800.0, 600.0, xs, ys, errorMessage, CreateRGBColor(1.0,0.0,0.0), true);
 
   AssertTrue(success, failures);
 

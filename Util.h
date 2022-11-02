@@ -16,8 +16,8 @@ struct point2f
 };
 
 struct Placar{
-  short a; 
-  short b;
+  int a; 
+  int b;
 };
 
 struct Bola{
