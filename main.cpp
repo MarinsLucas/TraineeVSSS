@@ -80,6 +80,7 @@ Jogo* customConfiguration()
 
 int main()
 {
+
   int a;
   Jogo *jogo; 
 
