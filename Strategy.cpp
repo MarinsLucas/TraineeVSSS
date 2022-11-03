@@ -80,19 +80,19 @@ void strategy::defender(Robot &robot, Bola &bola)
 		if(bola.pos.y < tamCampo.y/3)
 		{
 			//Quadrante 1,2,3
-			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
-			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime + 2;
-			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y> robot.pos.y) kick(robot, bola);
+			robot.goal.x = (bola.pos.x - direction*2);
+			robot.goal.y = bola.pos.y + 5;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y < robot.pos.y) kick(robot, bola);
 		} else if( bola.pos.y > 2*tamCampo.y/3)
 		{
 			//Quadrante 7,8,9
-			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
-			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime -2;
-			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y < robot.pos.y) kick(robot, bola);
+			robot.goal.x = (bola.pos.x - direction*2);
+			robot.goal.y = bola.pos.y - 5;
+			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y > robot.pos.y) kick(robot, bola);
 		}
 		else
 		{
-			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 			robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime;
 			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
 		}
@@ -120,19 +120,19 @@ void strategy::defender(Robot &robot, Bola &bola)
 		if(bola.pos.y < tamCampo.y/3)
 		{
 		//Quadrante 1,2,3
-		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 		robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime + 2;
 		if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y> robot.pos.y) kick(robot, bola);
 		} else if( bola.pos.y > 2*tamCampo.y/3)
 		{
 		//Quadrante 7,8,9
-		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+		robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 		robot.goal.y = bola.pos.y + bola.velocity.y*deltaTime -2;
 			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction && bola.pos.y < robot.pos.y) kick(robot, bola);
 		} 	
 		else
 		{
-			robot.goal.x = bola.pos.x + bola.velocity.x*deltaTime - direction*4;
+			robot.goal.x = bola.pos.x + bola.velocity.x*deltaTime - direction*2;
 			robot.goal.y = bola.pos.y + bola.velocity.x*deltaTime*1.5; 
 			if(dist(robot.pos, bola.pos)<10 && robot.pos.x*direction < bola.pos.x*direction) kick(robot, bola);
 		}
@@ -166,7 +166,7 @@ void strategy::striker(Robot &robot, Bola &bola)
 		} else
 		{
 			//Quadrante 5
-			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
 		}
     
@@ -182,7 +182,7 @@ void strategy::striker(Robot &robot, Bola &bola)
 		} else
 		{
 			//Quadrante 6
-			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*4);
+			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
 		}
 		cout<<"Quadrante 3, 6, 9"<<endl;

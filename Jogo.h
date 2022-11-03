@@ -17,8 +17,10 @@ class Jogo{
     Bola bola;      //Bola
     float atrito;   //coeficiente de atrito entre bola e campo
     bool printFrameByFrame; 
+    bool randomPos;
   public:
     Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF, strategy &time1, strategy &time2);
+    Jogo(int cAlt, int cLarg,float kat ,strategy &time1, strategy &time2);
     ~Jogo();
     void uptadeBall(float deltaTime);
     bool attackFault(strategy time);

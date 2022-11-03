@@ -42,6 +42,48 @@ Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF, 
   time_2.resetInitialPos();
   // print frameByFrame
   printFrameByFrame = bFbF;
+
+  //setando random
+  randomPos = false; 
+}
+
+Jogo::Jogo(int cLarg, int cAlt, float kat, strategy &time1, strategy &time2)
+{
+  // Configuração do critério de parada
+  criterioParada = 5;
+
+  // Configuração do campo
+  campo.x = cLarg;
+  campo.y = cAlt;
+
+  // Configuração de placar
+  placar.a = 0;
+  placar.b = 0;
+
+  time_1 = time1;
+  time_2 = time2;
+
+  point2f<float> c1, c2;
+  c1.x = 0;
+  c1.y = 65;
+  c2.x = 150;
+  c2.y = 65;
+
+   // Configuração do time
+  time_1.setCentroid(c1, c2, campo);
+  time_2.setCentroid(c2, c1, campo);
+
+  // Configuração do coeficiente de atrito
+  atrito = 9.82 * kat;
+  time_1.setDeltaTime(0.5);
+  time_2.setDeltaTime(0.5);
+
+  printFrameByFrame = true; 
+
+  randomPos = true; 
+
+  restartJogo();
+
 }
 
 Jogo::~Jogo()
@@ -51,11 +93,43 @@ Jogo::~Jogo()
 
 void Jogo::restartJogo()
 {
-  bola.pos.x = campo.x / 2;
-  bola.pos.y = campo.y / 2;
-  bola.velocity.x = 0;
-  bola.velocity.y = 0;
+  if(!randomPos)
+  {
+    bola.pos.x = campo.x / 2;
+    bola.pos.y = campo.y / 2;
+    bola.velocity.x = 0;
+    bola.velocity.y = 0;
+  }
+  else
+  {
+    srand((unsigned) time(NULL));
+    bola.pos.x = abs(rand() % 150);
+    bola.pos.y = abs(rand() % 130);
 
+    vector<point2f<float>> randomInitialPos;
+    point2f<float> aux;
+    aux.x = 1;  
+
+    for(int i = 0; i<3; i++)
+    {
+      srand((unsigned) time(NULL)/aux.x);
+      aux.x = (rand() % 150);
+      aux.y = (rand() % 130);
+      randomInitialPos.push_back(aux);
+    }
+    time_1.setInitialPos(randomInitialPos);
+    randomInitialPos.clear();
+
+    for(int i = 0; i<3; i++)
+    {
+      srand((unsigned) time(NULL)/aux.x);
+      aux.x = abs(rand() % 150);
+      aux.y = abs(rand() % 130);
+      randomInitialPos.push_back(aux);
+    }
+    time_2.setInitialPos(randomInitialPos);
+    randomInitialPos.clear();
+  }
   time_1.resetInitialPos();
   time_2.resetInitialPos();
 }

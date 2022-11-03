@@ -88,8 +88,9 @@ int main()
   cout<<"Bem vindo ao Projeto Trainee VSSS 2022 Time 1 da Rinobot"<<endl;
   cout<<"Você pode criar um jogo customizado (1)"<<endl;
   cout<<"Ou um jogo prédefinido (2)"<<endl;
+  cout<<"Ou um jogo com posições randômicas (3)"<<endl;
 
-  while(customInputs != 1 && customInputs !=2)
+  while(customInputs != 1 && customInputs !=2 && customInputs != 3)
   {
     cin>>customInputs;
     if(customInputs == 1)
@@ -134,13 +135,18 @@ int main()
 
       time_2.setInitialPos(initialPosTime2);
 
-      //Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, strategy a, strategy b)
       jogo = new Jogo(1, 130, 150, 0.01, bola, true, time_1, time_2);
+    }
+    else if(customInputs == 3)
+    {
+      strategy time_1;
+      strategy time_2; 
+      jogo = new Jogo(150,130,0.1,time_1, time_2);
     }
 
   }
 
-  for(int i=0;i<100;i++)
+  while(true)
   {
       if(!jogo->run()) break;
       cin >> a;
