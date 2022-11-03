@@ -52,11 +52,11 @@ void strategy::goalKepper(Robot &robot, Bola &bola)
 	}
 	else
 	{
-		robot.goal.x = robot.pos.x; 
+		robot.goal.x = centroidDef.x + direction*15; 
 		robot.goal.y = tamCampo.y/2;
 	}
   //chuta a bola, caso ela esteja próxima o suficiente
-  if(dist(robot.pos, bola.pos) < 10) kick(robot, bola);
+  if(dist(robot.pos, bola.pos) < 5) kick(robot, bola);
   
   updateRobot(robot);
 }
