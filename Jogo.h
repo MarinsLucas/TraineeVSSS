@@ -20,12 +20,10 @@ class Jogo{
   public:
     Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, bool bFbF, strategy &time1, strategy &time2);
     ~Jogo();
-    bool checkState(Placar atual);
-    void gameOver(); 
     void uptadeBall(float deltaTime);
     bool attackFault(strategy time);
     bool defenseFault(strategy time);
-    void run();
+    bool run();
     void resetInitialPos();
     void printFrame();
     void restartJogo();

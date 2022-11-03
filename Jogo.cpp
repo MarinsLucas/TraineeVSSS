@@ -92,9 +92,18 @@ void Jogo::printFrame()
   xs = {0, 15, 15, 0};
   ys = {30, 30, 100, 100};
   success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, GetBlack(), true, placarText);
-
+  
+  //Gol da esquerda
+  xs = {0,0};
+  ys = {(double)campo.y/2 + 20, (double)campo.y/2 -20};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0,1,0), true, placarText);
+  
+  //Gol da direita
+  xs = {150,150};
+  success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, CreateRGBColor(0,1,0), true, placarText);
   //área direita
   xs = {150, 150 - 15, 150 - 15, 150};
+  ys = {30, 30, 100, 100};
   success = DrawScatterPlot(imageReference, 1080, 720, &xs, &ys, errorMessage, GetBlack(), true, placarText);
 
   // time 1
@@ -131,17 +140,17 @@ void Jogo::printFrame()
   FreeAllocations();
 }
 
-void Jogo::run()
+bool Jogo::run()
 {
   if (placar.a >= criterioParada)
   {
     cout << "Vitória do time 1" << endl;
-    gameOver();
+    return false;
   }
   if (placar.b >= criterioParada)
   {
     cout << "Vitória do time 2" << endl;
-    gameOver();
+    return false;
   }
   if (bola.pos.x == time_1.getCentroid().x && (bola.pos.y > time_1.getCentroid().y - 20 && bola.pos.y < time_1.getCentroid().y + 20))
   {
@@ -183,28 +192,10 @@ void Jogo::run()
 
   uptadeBall(0.5);
 
-  if (checkState(placar))
-  {
-    gameOver();
-  }
-
   if (printFrameByFrame)
     printFrame();
 
-  return;
-}
-
-bool Jogo::checkState(Placar atual)
-{
-  if (atual.a >= criterioParada || atual.b >= criterioParada)
-    return true;
-  else
-    return false;
-}
-
-void Jogo::gameOver()
-{
-  // fim de jogo
+  return true;
 }
 
 void Jogo::uptadeBall(float deltaTime)

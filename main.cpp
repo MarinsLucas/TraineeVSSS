@@ -135,14 +135,14 @@ int main()
       time_2.setInitialPos(initialPosTime2);
 
       //Jogo::Jogo(int cP, int cAlt, int cLarg, float kat, point2f<float> b, strategy a, strategy b)
-      jogo = new Jogo(3, 130, 150, 0.01, bola, true, time_1, time_2);
+      jogo = new Jogo(1, 130, 150, 0.01, bola, true, time_1, time_2);
     }
 
   }
 
   for(int i=0;i<100;i++)
   {
-      jogo->run();
+      if(!jogo->run()) break;
       cin >> a;
   }
 } 
