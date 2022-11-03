@@ -174,7 +174,7 @@ void strategy::striker(Robot &robot, Bola &bola)
 	}
 	else if(horizontalDist > 2*tamCampo.x/3 && horizontalDist < tamCampo.x)	
 	{
-    if(bola.pos.y < tamCampo.y/3 || bola.pos.y > 2*tamCampo.y/3)
+    	if(bola.pos.y < tamCampo.y/3 || bola.pos.y > 2*tamCampo.y/3)
 		{
 			//Quadrante oito ou 9
 			robot.goal.x = bola.pos.x;
@@ -184,6 +184,11 @@ void strategy::striker(Robot &robot, Bola &bola)
 			//Quadrante 6
 			robot.goal.x = (bola.pos.x + bola.velocity.x*deltaTime - direction*2);
 			robot.goal.y = bola.pos.y + bola.velocity.y *deltaTime; 
+		}
+
+		if(bola.pos.x*direction > centroidAtk.x - direction*15)
+		{
+			robot.goal.x = centroidAtk.y - direction*15; 
 		}
 		cout<<"Quadrante 3, 6, 9"<<endl;
 	}
@@ -195,7 +200,7 @@ updateRobot(robot);
 void strategy::decision(point2f<int> &campSize, Robot *tR, Bola &bola)
 {
     goalKepper(tR[0], bola);
-		defender(tR[1], bola);
+	defender(tR[1], bola);
     striker(tR[2], bola);    
 
     //Verifica as posições dos jogadores, para que não saiam do campo
